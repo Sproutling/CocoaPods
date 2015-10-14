@@ -402,7 +402,9 @@ module Pod
     # @return [void]
     #
     def build_pod
-      if Executable.which('xcodebuild').nil?
+      if ENV.has_key?('SKIP_XCODEBUILD') && ENV['SKIP_XCODEBUILD'] == 'true'
+        UI.warn "Skipping compilation with `xcodebuild' because env SKIP_XCODEBUILD=true.\n".yellow
+      elsif Executable.which('xcodebuild').nil?
         UI.warn "Skipping compilation with `xcodebuild' because it can't be found.\n".yellow
       else
         UI.message "\nBuilding with xcodebuild.\n".yellow do
